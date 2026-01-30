@@ -1,15 +1,15 @@
-# Use a modern PyTorch image (PyTorch 2.4.0+ is required for enable_gqa)
-FROM runpod/pytorch:2.4.0-py3.10-cuda12.4.1-devel-ubuntu22.04
+FROM python:3.10-slim
 
-# Set working directory
+# Install system dependencies needed for CUDA/Graphics
+RUN apt-get update && apt-get install -y libgl1 libglib2.0-0 && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
-# Copy requirements and install
 COPY requirements.txt .
+# We update pip to ensure it can find the latest torch 2.4+
+RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy handler
 COPY handler.py .
 
-# Start the handler
 CMD ["python", "-u", "handler.py"]
