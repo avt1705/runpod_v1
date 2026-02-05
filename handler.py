@@ -35,5 +35,6 @@ def handler(event):
     return {
         "image_base64": image_b64
     }
-
+#testing for new redeplloy
 runpod.serverless.start({"handler": handler})
+
